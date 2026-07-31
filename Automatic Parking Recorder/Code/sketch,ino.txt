@@ -1,0 +1,65 @@
+#include <Servo.h>
+
+Servo gate;
+
+const int trigPin = 7;
+const int echoPin = 6;
+const int irPin = 2;
+const int buzzerPin = 8;
+
+void setup()
+{
+  gate.attach(9);
+
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+  pinMode(irPin, INPUT);
+  pinMode(buzzerPin, OUTPUT);
+
+  gate.write(0);      // Gate closed
+
+  Serial.begin(9600);
+}
+
+void loop()
+{
+  long duration;
+  float distance;
+
+  // Ultrasonic Trigger
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+
+  digitalWrite(trigPin, LOW);
+
+  duration = pulseIn(echoPin, HIGH);
+
+  distance = duration * 0.034 / 2;
+
+  Serial.print("Distance: ");
+  Serial.print(distance);
+  Serial.println(" cm");
+
+  if (distance <= 15)
+  {
+    gate.write(90);        // Open gate
+  }
+  else
+  {
+    gate.write(0);         // Close gate
+  }
+
+  if (digitalRead(irPin) == HIGH)
+  {
+    digitalWrite(buzzerPin, HIGH);
+  }
+  else
+  {
+    digitalWrite(buzzerPin, LOW);
+  }
+
+  delay(200);
+}
