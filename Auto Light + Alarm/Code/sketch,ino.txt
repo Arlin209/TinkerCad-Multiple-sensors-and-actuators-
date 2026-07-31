@@ -1,0 +1,17 @@
+int ldr=A0, pir=2, led=3, buzzer=4;
+
+void setup(){
+  pinMode(pir,INPUT);
+  pinMode(led,OUTPUT);
+  pinMode(buzzer,OUTPUT);
+}
+
+void loop(){
+  if(analogRead(ldr)<300 && digitalRead(pir)){
+    digitalWrite(led,HIGH);
+    digitalWrite(buzzer,HIGH);
+  } else {
+    digitalWrite(led,LOW);
+    digitalWrite(buzzer,LOW);
+  }
+}
